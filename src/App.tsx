@@ -54,7 +54,7 @@ const renderMovie = (movie: TmdbMovie) => (
             <ListItemButton
               onClick={(event) => handleListItemClick(event, movie.title)}
             >
-              <Typography sx={{ textDecoration: "underline" }}>
+              <Typography className="underline">
                 {movie.title}
               </Typography>
             </ListItemButton>
