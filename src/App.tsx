@@ -6,7 +6,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import watchlistItems from "../public/tmdb-watchlist.json" assert { type: "json" };
+import watchlistItems from "./assets/tmdb-watchlist.json" assert { type: "json" };
 import "./App.css";
 import { TmdbMovie } from "./models/tmdb";
 
