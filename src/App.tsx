@@ -2,6 +2,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import React from "react";
@@ -15,16 +16,29 @@ function App() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      <List sx={{ width: "100%", maxWidth: 400, bgcolor: "background.paper" }}>
         {listItems}
       </List>
     </React.Fragment>
   );
 }
 
+const handleListItemClick = (
+  _event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  movieTitle: string
+) => {
+  window.open(
+    `https://letterboxd.com/search/films/${encodeURIComponent(
+      movieTitle
+    )}/?adult`,
+    "_blank",
+    "noopener noreferrer"
+  );
+};
+
 const renderMovie = (movie: TmdbMovie) => (
   <>
-    <ListItem alignItems="flex-start">
+    <ListItem alignItems="flex-start" data-id={movie.id}>
       <img
         srcSet={`https://image.tmdb.org/t/p/w154/${movie.poster_path}?w=154&h231&fit=crop&auto=format&dpr=2 2x`}
         src={`https://image.tmdb.org/t/p/w154/${movie.poster_path}?w=154&h231&fit=crop&auto=format`}
@@ -32,22 +46,41 @@ const renderMovie = (movie: TmdbMovie) => (
         width="154"
         height="231"
         loading="lazy"
+        style={{ border: "solid 1px #777" }}
       />
       <ListItemText
-        primary={movie.title}
+        primary={
+          <React.Fragment>
+            <ListItemButton
+              onClick={(event) => handleListItemClick(event, movie.title)}
+            >
+              <Typography sx={{ textDecoration: "underline" }}>
+                {movie.title}
+              </Typography>
+            </ListItemButton>
+          </React.Fragment>
+        }
         secondary={
           <React.Fragment>
             <Typography
               component="span"
               variant="body2"
-              sx={{ color: "text.primary", display: "block" }}
+              sx={{
+                color: "text.primary",
+                display: "block",
+                marginLeft: "16px",
+              }}
             >
               Release Date: {!movie.release_date ? "TBD" : movie.release_date}
             </Typography>
             <Typography
               component="span"
               variant="body2"
-              sx={{ color: "text.primary", display: "block" }}
+              sx={{
+                color: "text.primary",
+                display: "block",
+                margin: "4px 0 0 16px",
+              }}
             >
               {translateGenresToString(movie.genre_ids)}
             </Typography>
