@@ -9,89 +9,79 @@ import React from "react";
 import watchlistItems from "./assets/tmdb-watchlist.json" assert { type: "json" };
 import "./App.css";
 import { TmdbMovie } from "./models/tmdb";
+import Stack from "@mui/material/Stack";
+import Card from "@mui/material/Card";
+import { Link } from "@mui/material";
 
 function App() {
   const items: TmdbMovie[] = watchlistItems satisfies TmdbMovie[];
   const listItems = items.sort(sortMovies).map(renderMovie);
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
-      <List sx={{ width: "100%", maxWidth: 400, bgcolor: "background.paper" }}>
+      <Stack direction="row" sx={{ flexWrap: "wrap", gap: "10px" }}>
         {listItems}
-      </List>
-    </React.Fragment>
+      </Stack>
+    </>
   );
 }
 
 const handleListItemClick = (
-  _event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  movieTitle: string
+  _event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  movieTitle: string,
 ) => {
   window.open(
     `https://letterboxd.com/search/films/${encodeURIComponent(
-      movieTitle
+      movieTitle,
     )}/?adult`,
     "_blank",
-    "noopener noreferrer"
+    "noopener noreferrer",
   );
 };
 
 const renderMovie = (movie: TmdbMovie) => (
-  <>
-    <ListItem alignItems="flex-start" data-id={movie.id}>
-      <img
-        srcSet={`https://image.tmdb.org/t/p/w154/${movie.poster_path}?w=154&h231&fit=crop&auto=format&dpr=2 2x`}
-        src={`https://image.tmdb.org/t/p/w154/${movie.poster_path}?w=154&h231&fit=crop&auto=format`}
-        alt={movie.title}
-        width="154"
-        height="231"
-        loading="lazy"
-        style={{ border: "solid 1px #777" }}
-      />
-      <ListItemText
-        primary={
-          <React.Fragment>
-            <ListItemButton
-              onClick={(event) => handleListItemClick(event, movie.title)}
-            >
-              <Typography className="underline">
-                {movie.title}
-              </Typography>
-            </ListItemButton>
-          </React.Fragment>
-        }
-        secondary={
-          <React.Fragment>
-            <Typography
-              component="span"
-              variant="body2"
-              sx={{
-                color: "text.primary",
-                display: "block",
-                marginLeft: "16px",
-              }}
-            >
-              Release Date: {!movie.release_date ? "TBD" : movie.release_date}
-            </Typography>
-            <Typography
-              component="span"
-              variant="body2"
-              sx={{
-                color: "text.primary",
-                display: "block",
-                margin: "4px 0 0 16px",
-              }}
-            >
-              {translateGenresToString(movie.genre_ids)}
-            </Typography>
-          </React.Fragment>
-        }
-      />
-    </ListItem>
-    <Divider variant="inset" component="li" aria-hidden="true" />
-  </>
+  <Card sx={{ textAlign: "center", width: "200px" }}>
+    <img
+      srcSet={`https://image.tmdb.org/t/p/w154/${movie.poster_path}?w=154&h231&fit=crop&auto=format&dpr=2 2x`}
+      src={`https://image.tmdb.org/t/p/w154/${movie.poster_path}?w=154&h231&fit=crop&auto=format`}
+      alt={movie.title}
+      title={movie.title}
+      width="154"
+      height="231"
+      loading="lazy"
+      style={{ border: "solid 1px #777" }}
+      className="place-self-center"
+    />
+    <Link
+      href={`https://letterboxd.com/search/films/${encodeURIComponent(
+        movie.title,
+      )}/?adult`}
+      underline="always"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {movie.title}
+    </Link>
+    <Typography
+      component="div"
+      variant="body2"
+      sx={{
+        color: "text.primary",
+      }}
+    >
+      {!movie.release_date ? "TBD" : movie.release_date}
+    </Typography>
+    <Typography
+      component="div"
+      variant="body2"
+      sx={{
+        color: "text.primary",
+      }}
+    >
+      {translateGenresToString(movie.genre_ids)}
+    </Typography>
+  </Card>
 );
-
 const sortMovies = (aMovie: TmdbMovie, bMovie: TmdbMovie): 0 | 1 | -1 => {
   if (!aMovie.release_date) {
     return 1;
