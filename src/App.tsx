@@ -1,17 +1,11 @@
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
-import React from "react";
-import watchlistItems from "./assets/tmdb-watchlist.json" assert { type: "json" };
-import "./App.css";
-import { TmdbMovie } from "./models/tmdb";
-import Stack from "@mui/material/Stack";
-import Card from "@mui/material/Card";
 import { Link } from "@mui/material";
+import Card from "@mui/material/Card";
+import CssBaseline from "@mui/material/CssBaseline";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import "./App.css";
+import watchlistItems from "./assets/tmdb-watchlist.json" assert { type: "json" };
+import { TmdbMovie } from "./models/tmdb";
 
 function App() {
   const items: TmdbMovie[] = watchlistItems satisfies TmdbMovie[];
@@ -19,28 +13,15 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <Stack direction="row" sx={{ flexWrap: "wrap", gap: "10px" }}>
+      <Stack direction="row" className="flex-wrap gap-2.5">
         {listItems}
       </Stack>
     </>
   );
 }
 
-const handleListItemClick = (
-  _event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-  movieTitle: string,
-) => {
-  window.open(
-    `https://letterboxd.com/search/films/${encodeURIComponent(
-      movieTitle,
-    )}/?adult`,
-    "_blank",
-    "noopener noreferrer",
-  );
-};
-
 const renderMovie = (movie: TmdbMovie) => (
-  <Card sx={{ textAlign: "center", width: "200px" }}>
+  <Card className="text-center w-52">
     <img
       srcSet={`https://image.tmdb.org/t/p/w154/${movie.poster_path}?w=154&h231&fit=crop&auto=format&dpr=2 2x`}
       src={`https://image.tmdb.org/t/p/w154/${movie.poster_path}?w=154&h231&fit=crop&auto=format`}
@@ -49,8 +30,7 @@ const renderMovie = (movie: TmdbMovie) => (
       width="154"
       height="231"
       loading="lazy"
-      style={{ border: "solid 1px #777" }}
-      className="place-self-center"
+      className="place-self-center border border-solid border-gray-500"
     />
     <Link
       href={`https://letterboxd.com/search/films/${encodeURIComponent(
